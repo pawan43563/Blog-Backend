@@ -9,10 +9,6 @@ let userSchema = new Schema({
         unique:true,
         required:[true,"UserId should be provided"]
     },
-    profilepic:{
-        type:String,
-        default:""
-    },
     name: {
         type: String,
         minLength:[3,"Name has to be greater than 3"]

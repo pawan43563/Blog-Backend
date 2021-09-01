@@ -6,6 +6,8 @@ const path=require("path")
 const dotenv=require("dotenv");
 dotenv.config({path:"../config.env"});
 const {uploader}=require("cloudinary")
+const {IMAGE_STORAGE_TYPE}=process.env;
+
 const sendResponse=require("../utils/sendResponse")
 const {GlobalErrorhandling,sendError}=require("../utils/errorHandling")
 // Sign-up
@@ -18,10 +20,6 @@ const register=async (req,res)=>{
             password: req.body.password,
             confirmPassword:req.body.confirmPassword,
         });
-        if(req.file){
-            let result=await uploader.upload(req.file.path)
-            user.profilepic=result.url;
-        }
         const response=await user.save()
         return sendResponse({
             res,
