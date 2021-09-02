@@ -21,14 +21,14 @@
       	<li><a href="#before-you-begin">Before You Begin</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
-       <li><a href="#run">Run</a></li>
+        <li><a href="#run-the-project">Run the project</a></li>
       </ul>
     </li>
     <li>
     <a href="#routes">Routes</a>
       <ul>
-    	<li><a href="#user-route">User Routes</a></li>
-    	<li><a href="#blog-route">Blog Routes</a></li>
+      	<li><a href="#user-routes">User Routes</a></li>
+        <li><a href="#blog-routes">Blog Routes</a></li>
       </ul>
     </li>
     <li><a href="#features">Features</a></li>
@@ -89,6 +89,7 @@ Make sure you have installed all of the following prerequisites on your machine:
    ```
    npm install
    ```
+
 ### Run the project
    ```
    node server.js
@@ -96,7 +97,7 @@ Make sure you have installed all of the following prerequisites on your machine:
 
 ## Routes
 
-### User Routes
+## User Routes
 
 
 **GET** 
@@ -143,7 +144,7 @@ On successfull request token will be given. we will be using this token to acces
 }
 ```
 
-### Blog Routes
+## Blog Routes
 
 
 **GET** (Public Route)
@@ -279,7 +280,7 @@ JWT token expiry error, mongoose validation error, mongoose duplicate and mongoo
 
 ### Deployment
 Backend:
-[Heroku](https://polar-woodland-07461.herokuapp.com/)
+[Heroku](https://shrouded-escarpment-31431.herokuapp.com/)
 
 ### References
 
