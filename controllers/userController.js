@@ -44,6 +44,13 @@ const register=async (req,res)=>{
 const getAlluser=async (req,res)=>{
     try{
         let data=await User.find()
+        if(!data.length){
+            return sendResponse({
+                res,
+                statusCode: 200,
+                message: `No User found`,
+            });
+        }
         return sendResponse({
             res,
             statusCode: 200,
@@ -54,7 +61,7 @@ const getAlluser=async (req,res)=>{
         return sendError(req,res,new GlobalErrorhandling(
             {
                 name:"Error while fetching all users",
-                status:400,
+                status:500,
                 isOperational:true,
                 error:error.message
             }

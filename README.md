@@ -106,13 +106,25 @@ Request on /users will give all the users
 /users
 ```
 
+
+
 **POST** 
 Request on /users/register with valid request body will create new user.
 
 ```
 /users/login
 ```
-
+* Request body
+```
+{
+	
+	name:String,
+	email:String in email format,
+	password:String,
+	confirmPassword:String
+	
+}
+```
 
 **POST** 
 Request on /users/login with valid request body will give all the users
@@ -121,6 +133,15 @@ Request on /users/login with valid request body will give all the users
 /users/login
 ```
 On successfull request token will be given. we will be using this token to access private routes
+* Request body
+```
+{
+	
+	email:String in email format,
+	password:String
+	
+}
+```
 
 ### Blog Routes
 
@@ -153,29 +174,62 @@ Request on /blogs with valid request body will create new blog.
 ```
 /blogs
 ```
+* Parameters to be passed as Form-Data
+* Request body 
+```
+{
+	author: String,
+	updatedAt: Date in format Time(HH:MM:SS) Date(DD/MM/YYYY),
+	blogTitle: String,
+	blogContent: String,
+	image: Add the Blog Image,
+	tags: Array of Tags,
+	relatedLinks: Array of link Objs
+}
+```
+
+
 
 **PATCH**(Private Route)
 Request on /blogs with specified id and valid request body will update blog.
-* Add Authorization in headers and put value <Bearer your_token> which you got during login.
+* Add Authorization in headers and put value <Bearer your_token> which you got during login. If you try to update a blog which is not yours error will be shown.
 ```
 /blogs/:id
 ```
+* Parameters to be passed as Form-Data
+* Request body 
+```
+{
+	author: String,
+	createdAt: Date in format Time(HH:MM:SS) Date(DD/MM/YYYY),
+	updatedAt: Date in format Time(HH:MM:SS) Date(DD/MM/YYYY),
+	blogTitle: String,
+	blogContent: String,
+	image: Add the Blog Image,
+	tags: Array of Tags,
+	relatedLinks: Array of link Objs
+}
+```
+
+
+
 **DELETE**(Private Route)
 Request on /blogs with specified id will delete blog.
-* Add Authorization in headers and put value <Bearer your_token> which you got during login.
+* Add Authorization in headers and put value <Bearer your_token> which you got during login. If you try to delete a blog which is not yours error will be shown.
 ```
 /blogs/:id
 ```
 
 
 	
-### features
+### Features
 
-1. Each User can have their own blog and only they will be able to update, delete it.
+1. Each User can have their own blog and only they will be able to access private route i.e. update delete.
 2. JWT Tokens to authenticate user.
 2. Image Adapter = User can save data to cloud or in their local system based on mode selected .
-3. In development mode error stack will be shown while in production only relevant error will be shown to the user.
-
+3. In development mode error stacks will be shown while in production only relevant error will be shown to the user.
+4. Centralized Error handler where according to the type of error i.e.
+JWT token expiry error, mongoose validation error, mongoose duplicate and mongoose cast error relevant message will shown specifying which variable caused it.
 
 	
 
@@ -221,15 +275,18 @@ Request on /blogs with specified id will delete blog.
 
 ### Postman
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/fab8719c06382c604a6e)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/16992984-2abde15e-8b37-44d6-85a4-15e0a458e126?action=collection%2Ffork&collection-url=entityId%3D16992984-2abde15e-8b37-44d6-85a4-15e0a458e126%26entityType%3Dcollection%26workspaceId%3D265a697b-23e2-4d01-a028-01e2285767af)
 
 ### Deployment
 Backend:
 [Heroku](https://polar-woodland-07461.herokuapp.com/)
 
-Frontend:
-[Github Live Link](https://pawan43563.github.io/Todolist-Frontend-/)
-[Netlify Live Link](https://naughty-minsky-ced17d.netlify.app/)
+### References
+
+- [mongoDB documentation reference](https://docs.mongodb.com/manual/introduction/)
+- [multer for file uploads](https://www.npmjs.com/package/multer)
+- [npm express](https://www.npmjs.com/package/express)
+- [upload image to cloudinary in nodejs official doc](https://cloudinary.com/blog/node_js_file_upload_to_a_local_server_or_to_the_cloud)
 
 <!-- CONTACT -->
 ## Contact

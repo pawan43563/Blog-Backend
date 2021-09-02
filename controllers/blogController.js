@@ -20,7 +20,6 @@ const imageupload=async ({req_type,file,image})=>{
                 await fs.unlink(path, function (err) {
 
                     if (err){
-                        console.log(err);
                         return err
                     }
                 });
@@ -139,7 +138,7 @@ const getBlogs=async (req,res)=>{
         }else{
             response=await Blog.find(req.query);   
         }
-        if(!response.length>1){
+        if(!response.length){
             return sendResponse({
                 res,
                 statusCode: 200,
@@ -200,26 +199,30 @@ const deleteBlogById=async (req,res,next)=>{
     try{
         let getbloguser=await Blog.findOne({blogId:req.params.id})
         if(!getbloguser){
-            return next(new GlobalErrorhandling(
-                'NOT FOUND',
-                404,
-                true,
-                `Blog with an id: ${req.params.id} not found`
+            return sendError(req,res,new GlobalErrorhandling(
+                {
+                    name:'NOT FOUND',
+                    status:404,
+                    isOperational:true,
+                    error:`Blog with an id: ${req.params.id} not found`
+                }
             ))
         }
         if(getbloguser.userId!==req.user){
             return sendError(req,res,new GlobalErrorhandling(
-                'UnAuthorized User',
-                401,
-                true,
-                `You can't delete this blog as it not belongs to you.`
+                {
+                    name:'UnAuthorized User',
+                    status:401,
+                    isOperational:true,
+                    error:`You can't delete this blog as it not belongs to you.`
+                }
             ))
         }
         let result=await Blog.deleteOne({blogId:req.params.id})
         return sendResponse({
             res,
             statusCode: 200,
-            message: `Successfully Deleted blog with id:${req.params.id}`,
+            message: `Successfully Deleted blog with an id:${req.params.id}`,
         });
     }catch(error){
         console.log(error);
@@ -248,7 +251,7 @@ const updateBlogById=async (req,res)=>{
             ))
         }
         if(getbloguser.userId!==req.user){
-            return sendError(new GlobalErrorhandling(
+            return sendError(req,res,new GlobalErrorhandling(
                 {
                     name:'UnAuthorized User',
                     status:401,
