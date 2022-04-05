@@ -35,8 +35,9 @@ const imageupload=async ({req_type,file,image})=>{
     switch(IMAGE_STORAGE_TYPE){
         case "CLOUD":{
             let result=await uploader.upload(file.path)
-            let {public_id,format}=result
-            return public_id+"."+format;
+            const {url}=result
+            // let {public_id,format}=result
+            return url
         
         }
         case "LOCAL":{
@@ -48,6 +49,18 @@ const imageupload=async ({req_type,file,image})=>{
 
 
 const createBlog=async (req,res)=>{
+    console.log(req.file);
+    if(!req.file){
+        return sendError(req,res,new GlobalErrorhandling(
+            {
+                name:"Bad Request",
+                status:404,
+                isOperational:true,
+                error:"error"
+            }
+            
+        )) 
+    }
     let {author,createdAt,blogContent,blogTitle,tags,relatedLinks}=req.body;
     let arrayofrelatedlinks=[]
     if(relatedLinks){
@@ -59,6 +72,20 @@ const createBlog=async (req,res)=>{
         })    
     }
     try{
+        let getblogs=await Blog.find();
+        if(getblogs.length>2){
+            let blog;
+            for(let i=0;i<3;i++){
+                blog=getblogs[Math.floor(Math.random() * getblogs.length)]
+                let obj={
+                    "title":blog.blogTitle,
+                    "href":"www.example.com",
+                    "linkId":blog.blogId
+                }
+                arrayofrelatedlinks.push(obj)
+            }         
+        }
+        // console.log(arrayofrelatedlinks);
         const blog=new Blog({
             blogId:uniqid(),
             author:author,
@@ -70,7 +97,7 @@ const createBlog=async (req,res)=>{
             updatedAt:"",
         })
         if(req.file){
-            blog.blogImage=await imageupload({req_type:"PATCH",file:req.file,image:{}})
+            blog.blogImage=await imageupload({req_type:"POST",file:req.file,image:{}})
             if(!blog.blogImage){
                 return sendError(req,res,new GlobalErrorhandling(
                     {
@@ -273,8 +300,9 @@ const updateBlogById=async (req,res)=>{
                 ))
             }
         }
-        let response=await Blog.findOneAndUpdate({blogId:req.params.id},{$set:req.body},
-            {  runValidators:true})
+        let response=await Blog.findOneAndUpdate({blogId:req.params.id},JSON.stringify(req.body),
+            {  runValidators:true })
+
         return sendResponse({
             res,
             statusCode: 200,

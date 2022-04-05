@@ -18,6 +18,7 @@ const blogSchema = new Schema({
   },
   tags:{
       type:[String],
+      default:[]
   },
   blogTitle: {
     type: String,
@@ -43,8 +44,18 @@ const blogSchema = new Schema({
          },
          href:{
              type:String,
-             required:true
-         }
+             required:true,
+             validate: {
+              validator: function(v){
+                  return /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g.test(v);
+              },
+              message: (props) => 'Please Enter a valid Reference Link',
+          }
+        },
+        linkId:{
+          type:String,
+          default:"",
+        }
      }],
      default:[]
   },
